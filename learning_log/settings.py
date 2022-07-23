@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-g$f2rsd+w4h2@+!%^7#)fp^gx+6=h9@#r!f+g9u273#4o3bfyf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.lizhiqian.top', '8.130.53.232']
+ALLOWED_HOSTS = [ '8.130.53.232']
 
 
 # Application definition
