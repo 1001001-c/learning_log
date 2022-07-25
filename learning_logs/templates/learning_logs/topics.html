@@ -12,6 +12,7 @@
       <li>
           <h3>
             <a href="{% url 'learning_logs:topic' topic.id %}"> {{ topic }} </a>
+	    <a href="{% url 'learning_logs:del_topic' topic.id %}"> 删除主题 </a>
           </h3>
       </li>
       {% empty %}
