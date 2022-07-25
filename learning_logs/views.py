@@ -35,6 +35,7 @@ def topic(request, topic_id):
             'markdown.extensions.extra',
             # 语法高亮扩展
             'markdown.extensions.codehilite',
+	    'markdown.extensions.toc',
              ])
     context = {'topic':topic, 'entries':entries}
     return render(request, 'learning_logs/topic.html', context)
