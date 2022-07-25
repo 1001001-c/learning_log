@@ -1,0 +1,38 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block header %}
+<h2>{{ topic }}</h2>
+{% endblock header %}
+
+{% block content %}
+  <p>
+    <a href="{% url 'learning_logs:new_entry' topic.id %}">添加新的内容</a>
+  </p>
+
+  <ul>
+      {% for entry in entries %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>
+                    {{ entry.date_added|date:'Y, M, D, H:i:s' }}
+                    <small>
+                        <a href="{% url 'learning_logs:edit_entry' entry.id %}">
+                            编辑内容</a>
+                        <a href="{% url 'learning_logs:del_entry' entry.id %}">
+                            删除本条</a>
+                    </small>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {{ entry.text|safe|linebreaks }}
+            </div>
+        </div>
+    
+      {% empty %}
+      <li>
+          There are no entries for this topic yet.
+      </li>
+      {% endfor %}
+  </ul>
+
+  {% endblock content %}
