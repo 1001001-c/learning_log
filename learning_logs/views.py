@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+import markdown
 from .forms import TopicForm , EntryForm
 from .models import Topic, Entry
 
@@ -18,15 +18,24 @@ def topics(request):
 	context = {'topics':topics}
 	return render(request, 'learning_logs/topics.html', context)
 
+
 @login_required #user's topics
 def topic(request, topic_id):
     """show single topic and self.entrise"""
     topic = Topic.objects.get(id=topic_id)
         
     #check
-    if topic.owner != request.user:
+    if topic.owner != request.user or topic.owner == 'admin':
         raise Http404
     entries = topic.entry_set.order_by('-date_added')
+    for entry in entries:
+        entry.text = markdown.markdown(entry.text,
+            extensions=[
+            # 包含 缩写、表格等常用扩展
+            'markdown.extensions.extra',
+            # 语法高亮扩展
+            'markdown.extensions.codehilite',
+             ])
     context = {'topic':topic, 'entries':entries}
     return render(request, 'learning_logs/topic.html', context)
 
@@ -46,6 +55,12 @@ def new_topic(request):
     context = {'form':form}
     return render(request, 'learning_logs/new_topic.html', context)
 
+@login_required 
+def del_topic(request, topic_id):
+    topic = Topic.objects.get(id=topic_id)
+    topic.delete()
+    return HttpResponseRedirect(reverse('learning_logs:topics'))
+
 @login_required #user's topics
 def new_entry(request, topic_id):
     """add new entry in select_topic"""
@@ -64,6 +79,14 @@ def new_entry(request, topic_id):
             return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id]))
     context = {'topic':topic, 'form':form}
     return render(request, 'learning_logs/new_entry.html', context)
+
+@login_required 
+def del_entry(request, entry_id):
+    
+    entry = Entry.objects.get(id = entry_id)
+    topic = entry.topic
+    entry.delete()
+    return HttpResponseRedirect(reverse('learning_logs:topics')     )
 
 @login_required #user's topics
 def edit_entry(request, entry_id):
