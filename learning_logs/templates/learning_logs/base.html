@@ -1,4 +1,5 @@
 {% load bootstrap3 %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +11,7 @@
         <title>学习笔记</title>
         {% bootstrap_css %}
         {% bootstrap_javascript %}
+	<link rel="stylesheet" href="{% static 'md_css/monokai.css' %}">
     </head>
 
     <body>
@@ -52,4 +54,3 @@
         </div> <!-- /container -->
     </body>
 </html>
-
